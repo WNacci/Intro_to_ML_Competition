@@ -76,3 +76,60 @@ def Input_Data(verbose=False):
         data.info()
 
     return data
+
+
+def leaderboard_data():
+    feature_weights = pd.read_csv("./feature_weights.csv")
+    morph_embeddings = pd.read_csv("./morph_embeddings.csv")
+    
+    # join all feature_weight_i columns into a single np.array column
+    feature_weights["feature_weights"] = (
+        feature_weights.filter(regex="feature_weight_")
+        .sort_index(axis=1)
+        .apply(lambda x: np.array(x), axis=1)
+    )
+    # delete the feature_weight_i columns
+    feature_weights.drop(
+        feature_weights.filter(regex="feature_weight_").columns, axis=1, inplace=True
+    )
+
+    # join all morph_embed_i columns into a single np.array column
+    morph_embeddings["morph_embeddings"] = (
+        morph_embeddings.filter(regex="morph_emb_")
+        .sort_index(axis=1)
+        .apply(lambda x: np.array(x), axis=1)
+    )
+    # delete the morph_embed_i columns
+    morph_embeddings.drop(
+        morph_embeddings.filter(regex="morph_emb_").columns, axis=1, inplace=True
+    )
+    
+    #we need to first load and merge the leaderboard data to have the same format as the training set
+    lb_data = pd.read_csv("./leaderboard_data.csv")
+    lb_data = (
+        lb_data.merge(
+            feature_weights.rename(columns=lambda x: "pre_" + x), 
+            how="left", 
+            validate="m:1",
+            copy=False,
+        )
+        .merge(
+            feature_weights.rename(columns=lambda x: "post_" + x),
+            how="left",
+            validate="m:1",
+            copy=False,
+        )
+        .merge(
+            morph_embeddings.rename(columns=lambda x: "pre_" + x),
+            how="left",
+            validate="m:1",
+            copy=False,
+        )
+        .merge(
+            morph_embeddings.rename(columns=lambda x: "post_" + x),
+            how="left",
+            validate="m:1",
+            copy=False,
+        )
+    )
+    return lb_data

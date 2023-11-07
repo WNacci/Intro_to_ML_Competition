@@ -13,11 +13,10 @@
 
 # ToDo
 - [ ] Setup testing pipeline
-    - [ ] Setup file for data input & initial assembly
-    - [ ] Setup file for data processing
-    - [ ] Setup file for data splitting & testing
+    - Add testing & submission file/system
 - [ ] Get Random Forest working
     - Lab 19
     - Genevera Said that very engineered features may not work well with RF?
 - [ ] Try Boosting
     - Lab 20..?
+- [ ] Try training ensemble models with PCA, see performance changes
