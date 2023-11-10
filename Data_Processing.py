@@ -42,5 +42,12 @@ def Basic_FE(data):
     data = pd.get_dummies(data, columns=['compartment'],dtype=float)
     
     # Deleting unwanted features
-    data = data.loc[:, ~data.columns.isin(['ID','pre_brain_area', 'post_brain_area','pre_feature_weights','post_feature_weights','pre_morph_embeddings','post_morph_embeddings'])]
+    data = data.loc[:, ~data.columns.isin(['ID','pre_brain_area',
+                                           'post_brain_area',
+                                           'pre_feature_weights',
+                                           'post_feature_weights',
+                                           'pre_morph_embeddings',
+                                           'post_morph_embeddings',
+                                           'pre_nucleus_id',
+                                           'post_nucleus_id',])]
     return data
