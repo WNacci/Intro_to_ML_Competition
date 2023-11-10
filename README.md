@@ -20,3 +20,8 @@
 - [ ] Try Boosting
     - Lab 20..?
 - [ ] Try training ensemble models with PCA, see performance changes
+
+# Feature Engineering Ideas
+- Better functionality association
+    - (Embedding similarity/correlation)
+    - I think this could be very effective
