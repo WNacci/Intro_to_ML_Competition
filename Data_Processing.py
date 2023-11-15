@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import math
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics.pairwise import cosine_similarity
 
 #similarity function
 def row_feature_similarity(row):
@@ -51,3 +53,49 @@ def Basic_FE(data):
                                            'pre_nucleus_id',
                                            'post_nucleus_id',])]
     return data
+
+
+#XGboost Preprocessing
+def xg_FE(df):
+    #Combine compartment?)
+    
+    df["fw_similarity"] = df.apply(row_feature_similarity, axis=1)
+    df["morph_similarity"] = df.apply(row_feature_similarity_morph, axis=1)
+    df["rf_x_similarity"] = df.apply(row_feature_similarity_rfx, axis=1)
+    df["rf_y_similarity"] = df.apply(row_feature_similarity_rfy, axis=1)
+    
+    df.rename({'compartment': 'comp', 'pre_brain_area': 'poba','post_brain_area':'prba'}, axis=1, inplace=True)
+    
+    df["projection_g"] = (
+        df["prba"].astype(str)
+        + "->"
+        + df["poba"].astype(str)
+    )
+    
+    df["compartment"] = df["comp"].astype("category")
+    df["projection_group"] = df["projection_g"].astype("category")
+    #df["pre_brain_area"] = df["prba"].astype("category")
+    #df["post_brain_area"] = df["poba"].astype("category")
+    
+    # Deleting unwanted features
+    df = df.loc[:, ~df.columns.isin(['ID',
+                                           'comp',
+                                           'poba',
+                                           'prba',
+                                           'projection_g',
+                                           'pre_feature_weights',
+                                           'post_feature_weights',
+                                           'pre_morph_embeddings',
+                                           'post_morph_embeddings',
+                                           'pre_nucleus_id',
+                                           'post_nucleus_id',])]
+    
+    df = df[df['compartment'] != 'axon']
+    #Cutting out axons, unsure if this is a good idea or not!
+    df.drop(df[df['compartment'] == 'axon'].index, inplace=True)
+    #subset = df.select_dtypes('number')
+    #std_scaler = StandardScaler()
+    #df_scaled = std_scaler.fit_transform(subset.to_numpy())
+    #df[subset.columns] = df_scaled
+    
+    return df

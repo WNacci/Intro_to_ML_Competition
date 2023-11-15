@@ -25,3 +25,6 @@
 - Better functionality association
     - (Embedding similarity/correlation)
     - I think this could be very effective
+
+# XGboost
+- Reconstruct data to fit XGboost (categorical data.. etc?)
