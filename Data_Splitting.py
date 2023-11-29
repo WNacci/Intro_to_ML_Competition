@@ -35,7 +35,7 @@ class split_data:
     
 
 def train_test(data, test_ratio=0.2):
-    train_data, test_data = train_test_split(data, test_size=test_ratio, random_state=1)
+    train_data, test_data = train_test_split(data, test_size=test_ratio, random_state=14)
     train_x = train_data.loc[:, train_data.columns != "connected"]
     train_y = train_data["connected"]
     test_x = test_data.loc[:, test_data.columns != "connected"]

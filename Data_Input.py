@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.cluster import SpectralClustering
 
 def Input_Data(verbose=False):
     #load in training data on each potential synapse
@@ -22,7 +23,16 @@ def Input_Data(verbose=False):
         print("\nMorphological Embeddings Size:",morph_embeddings.shape)
         print("\nMorphological Embeddings:")
         morph_embeddings.info(verbose=False)
+    
+    #Spectral clustering
+    spectral_clustering = SpectralClustering(n_clusters=75, affinity='rbf', random_state=42)
+    d_clust = feature_weights.drop('nucleus_id', axis=1)  # Drop the 'Name' column
+    predicted_clusters = spectral_clustering.fit_predict(d_clust)
+    predicted_clusters = pd.DataFrame(predicted_clusters, columns=['cluster'])
+    predicted_clusters = predicted_clusters.assign(nucleus_id=feature_weights['nucleus_id'])
 
+
+    
     # join all feature_weight_i columns into a single np.array column
     feature_weights["feature_weights"] = (
             feature_weights.filter(regex="feature_weight_")
@@ -69,6 +79,18 @@ def Input_Data(verbose=False):
                 validate="m:1",
                 copy=False,
                 )
+            .merge(
+                predicted_clusters.rename(columns=lambda x: "pre_" +x),
+                how="left",
+                validate="m:1",
+                copy=False,
+                )
+            .merge(
+                predicted_clusters.rename(columns=lambda x: "post_" +x),
+                how="left",
+                validate="m:1",
+                copy=False,
+                )
             )
     if (verbose):
         print("Data Size:",data.shape)
@@ -81,6 +103,13 @@ def Input_Data(verbose=False):
 def leaderboard_data():
     feature_weights = pd.read_csv("./feature_weights.csv")
     morph_embeddings = pd.read_csv("./morph_embeddings.csv")
+    
+    #Spectral clustering
+    spectral_clustering = SpectralClustering(n_clusters=75, affinity='rbf', random_state=42)
+    d_clust = feature_weights.drop('nucleus_id', axis=1)  # Drop the 'Name' column
+    predicted_clusters = spectral_clustering.fit_predict(d_clust)
+    predicted_clusters = pd.DataFrame(predicted_clusters, columns=['cluster'])
+    predicted_clusters = predicted_clusters.assign(nucleus_id=feature_weights['nucleus_id'])
     
     # join all feature_weight_i columns into a single np.array column
     feature_weights["feature_weights"] = (
@@ -131,5 +160,17 @@ def leaderboard_data():
             validate="m:1",
             copy=False,
         )
+            .merge(
+                predicted_clusters.rename(columns=lambda x: "pre_" +x),
+                how="left",
+                validate="m:1",
+                copy=False,
+                )
+            .merge(
+                predicted_clusters.rename(columns=lambda x: "post_" +x),
+                how="left",
+                validate="m:1",
+                copy=False,
+                )
     )
     return lb_data
