@@ -12,13 +12,7 @@
 - Stratified Bootstrapping
 
 # ToDo
-- [ ] Setup testing pipeline
-    - Add testing & submission file/system
-- [ ] Get Random Forest working
-    - Lab 19
-    - Genevera Said that very engineered features may not work well with RF?
-- [ ] Try Boosting
-    - Lab 20..?
+- [ ] Implement a searching validation set to better tune hyperparameters
 - [ ] Try training ensemble models with PCA, see performance changes
 
 # Feature Engineering Ideas
