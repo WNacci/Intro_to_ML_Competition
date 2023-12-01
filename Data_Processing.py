@@ -134,11 +134,12 @@ def xg_FE(df):
                                     'post_morph_embeddings',
                                     'pre_nucleus_id',
                                     'post_nucleus_id',
-                                    'pre_rf_x',
-                                    'post_rf_x',
-                                    'pre_rf_y',
-                                    'post_rf_y',
                                     ])]
+    
+                                   # 'pre_rf_x',
+                                   # 'post_rf_x',
+                                   # 'pre_rf_z',
+                                   # 'post_rf_z',
     
     
     #subset = df.select_dtypes('number')
