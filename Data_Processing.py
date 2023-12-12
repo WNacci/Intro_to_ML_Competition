@@ -50,7 +50,7 @@ def oracle_diff(row):
 def total_path(row):
     pred = row["pre_skeletal_distance_to_soma"]
     postd = row["post_skeletal_distance_to_soma"]
-    return abs(pred-postd)
+    return abs(pred+postd)
 
 def path_to_dist(row):
     return row["total_path"]/row["nuclear_dist"]
@@ -135,16 +135,5 @@ def xg_FE(df):
                                     'pre_nucleus_id',
                                     'post_nucleus_id',
                                     ])]
-    
-                                   # 'pre_rf_x',
-                                   # 'post_rf_x',
-                                   # 'pre_rf_z',
-                                   # 'post_rf_z',
-    
-    
-    #subset = df.select_dtypes('number')
-    #std_scaler = StandardScaler()
-    #df_scaled = std_scaler.fit_transform(subset.to_numpy())
-    #df[subset.columns] = df_scaled
     
     return df

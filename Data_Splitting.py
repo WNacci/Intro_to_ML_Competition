@@ -31,7 +31,6 @@ class split_data:
     def resample(self):
         # oversample connected neuron pairs
         ros = RandomOverSampler(random_state=0)
-        # X_resampled, y_resampled = ros.fit_resample(train_data[["fw_similarity", "adp_dist"]], train_data["connected"])
         # Oversample but with all features
         self.trainx, self.trainy = ros.fit_resample(self.trainx,self.trainy)
     
